@@ -14,13 +14,22 @@ public class FlutterScanV2Plugin: NSObject, FlutterPlugin {
       result("macOS " + ProcessInfo.processInfo.operatingSystemVersionString)
 
     case "parse":
-      let path = call.arguments as! String;
-      if let features = CodeReader.detectQRCode(UIImage.init(contentsOfFile: path)), !features.isEmpty {
-        let data = features.first as! CIQRCodeFeature
-        result(data.messageString);
-      } else {
-        self.detectBarCode(UIImage.init(contentsOfFile: path), result: result)
-      }
+        let path = call.arguments as! String;
+        if let features = CodeReader.detectQRCode(path), !features.isEmpty {
+            let data = features.first as! CIQRCodeFeature
+            result(data.messageString);
+        } else {
+            CodeReader.detectBarCode(path, result: result)
+        }
+
+    case "parseQR":
+        let path = call.arguments as! String;
+        if let features = CodeReader.detectQRCode(path), !features.isEmpty {
+            let data = features.first as! CIQRCodeFeature
+            result(data.messageString);
+        } else {
+            result(nil);
+        }
 
     default:
       result(FlutterMethodNotImplemented)

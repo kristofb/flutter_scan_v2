@@ -1,9 +1,11 @@
 import Vision
+import FlutterMacOS
 
 public class CodeReader {
 
-  public static func detectQRCode(_ image: UIImage?) -> [CIFeature]? {
-    if let image = image, let ciImage = CIImage.init(image: image){
+  public static func detectQRCode(_ imagePath: String) -> [CIFeature]? {
+      let url = NSURL.fileURL(withPath: imagePath);
+      if let ciImage = CIImage.init(contentsOf: url) {
       var options: [String: Any];
       let context = CIContext();
       options = [CIDetectorAccuracy: CIDetectorAccuracyHigh];
@@ -18,9 +20,10 @@ public class CodeReader {
     }
     return nil
   }
-  
-  public static func detectBarCode(_ image: UIImage?, result: @escaping FlutterResult) {
-    if let image = image, let ciImage = CIImage.init(image: image), #available(iOS 11.0, *) {
+
+  public static func detectBarCode(_ imagePath: String, result: @escaping FlutterResult) {
+      let url = NSURL.fileURL(withPath: imagePath);
+      if let ciImage = CIImage.init(contentsOf: url) {
       var requestHandler: VNImageRequestHandler;
       if ciImage.properties.keys.contains((kCGImagePropertyOrientation as String)) {
         requestHandler = VNImageRequestHandler(ciImage: ciImage, orientation: CGImagePropertyOrientation(rawValue: ciImage.properties[(kCGImagePropertyOrientation as String)] as! UInt32) ?? .up, options: [:])
