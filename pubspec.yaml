@@ -39,8 +39,10 @@ flutter:
         pluginClass: FlutterScanV2Plugin
       ios:
         pluginClass: FlutterScanV2Plugin
+        sharedDarwinSource: true
       macos:
         pluginClass: FlutterScanV2Plugin
+        sharedDarwinSource: true
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -1,5 +1,8 @@
-import Cocoa
+#if os(macOS)
 import FlutterMacOS
+#else
+import Flutter
+#endif
 
 public class FlutterScanV2Plugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {

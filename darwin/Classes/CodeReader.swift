@@ -1,5 +1,9 @@
 import Vision
+#if os(macOS)
 import FlutterMacOS
+#else
+import Flutter
+#endif
 
 public class CodeReader {
 
