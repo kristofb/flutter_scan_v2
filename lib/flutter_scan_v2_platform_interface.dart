@@ -26,4 +26,8 @@ abstract class FlutterScanV2Platform extends PlatformInterface {
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
+
+  Future<String?> parse(String path) async {
+    throw UnimplementedError('parse(path) has not been implemented.');
+  }
 }

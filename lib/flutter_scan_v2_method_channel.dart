@@ -11,7 +11,14 @@ class MethodChannelFlutterScanV2 extends FlutterScanV2Platform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
+  }
+
+  @override
+  Future<String?> parse(String path) async {
+    final String? result = await methodChannel.invokeMethod('parse', path);
+    return result;
   }
 }
