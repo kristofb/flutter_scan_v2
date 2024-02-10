@@ -24,6 +24,10 @@ class FlutterScanV2Plugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: Result) {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    } else if (call.method.equals("parse"))  {
+      var path: String? = call.arguments
+      task = com.chavesgu.scan.ScanPlugin.QrCodeAsyncTask(this, path)
+      task.execute(path)
     } else {
       result.notImplemented()
     }
