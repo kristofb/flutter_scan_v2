@@ -1,39 +1,67 @@
 package com.chavesgu.scan.flutter_scan_v2
 
-import androidx.annotation.NonNull
-
+import android.app.Activity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 /** FlutterScanV2Plugin */
-class FlutterScanV2Plugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class FlutterScanV2Plugin : FlutterPlugin, MethodCallHandler {
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private lateinit var channel: MethodChannel
+    public var flutterPluginBinding: FlutterPluginBinding? = null
+    private val _result: Result? = null
+    private var task: QrCodeAsyncTask? = null
+    private var activity: Activity? = null
 
-  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_scan_v2")
-    channel.setMethodCallHandler(this)
-  }
-
-  override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else if (call.method.equals("parse"))  {
-      var path: String? = call.arguments
-      task = com.chavesgu.scan.ScanPlugin.QrCodeAsyncTask(this, path)
-      task.execute(path)
-    } else {
-      result.notImplemented()
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
+        this.flutterPluginBinding = flutterPluginBinding
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_scan_v2")
+        channel.setMethodCallHandler(this)
     }
-  }
 
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+    override fun onMethodCall(call: MethodCall, result: Result) {
+        if (call.method == "getPlatformVersion") {
+            result.success("Android ${android.os.Build.VERSION.RELEASE}")
+        } else if (call.method.equals("parse")) {
+            val path: String? = call.arguments as String?
+            val task = QrCodeAsyncTask(this, path)
+            task.execute(path)
+        } else {
+            result.notImplemented()
+        }
+    }
+
+//    private fun configChannel(binding: ActivityPluginBinding) {
+//        activity = binding.activity
+//        channel = MethodChannel(flutterPluginBinding!!.binaryMessenger, "chavesgu/scan")
+//        channel.setMethodCallHandler(this)
+//        flutterPluginBinding!!.platformViewRegistry
+//            .registerViewFactory(
+//                "chavesgu/scan_view", ScanViewFactory(
+//                    flutterPluginBinding!!.binaryMessenger,
+//                    flutterPluginBinding!!.applicationContext,
+//                    activity,
+//                    binding
+//                )
+//            )
+//    }
+
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+        flutterPluginBinding = null
+    }
+
+    fun endOfTask(s: String) {
+        _result?.success(s)
+        task?.cancel(true)
+        task = null
+    }
 }
