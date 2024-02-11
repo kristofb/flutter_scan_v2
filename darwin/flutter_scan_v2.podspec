@@ -16,13 +16,11 @@ QR & other code scanner
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
 
-#   s.ios.platform = :ios, '11.0'
   s.ios.dependency 'Flutter'
   s.ios.deployment_target = '11.0'
 
-#   s.osx.platform = :osx, '10.15'
   s.osx.dependency 'FlutterMacOS'
-  s.osx.deployment_target = '10.15'
+  s.osx.deployment_target = '10.14'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'

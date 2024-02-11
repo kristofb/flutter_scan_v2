@@ -6,7 +6,12 @@ import Flutter
 
 public class FlutterScanV2Plugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "flutter_scan_v2", binaryMessenger: registrar.messenger)
+#if os(macOS)
+      let messenger = registrar.messenger
+#else
+      let messenger = registrar.messenger()
+#endif
+    let channel = FlutterMethodChannel(name: "flutter_scan_v2",binaryMessenger: messenger)
     let instance = FlutterScanV2Plugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
