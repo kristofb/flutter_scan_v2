@@ -14,6 +14,9 @@ public class FlutterScanV2Plugin: NSObject, FlutterPlugin {
     let channel = FlutterMethodChannel(name: "flutter_scan_v2",binaryMessenger: messenger)
     let instance = FlutterScanV2Plugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
+#if !os(macOS)
+    registrar.register(ScanViewFactory(registrar: registrar), withId: "flutter_scan_v2/scan_view");
+#endif
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

@@ -1,23 +1,20 @@
 package com.chavesgu.scan.flutter_scan_v2;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
-import static android.content.Context.VIBRATOR_SERVICE;
 
 public class QrCodeAsyncTask extends AsyncTask<String, Integer, String> {
     private final WeakReference<FlutterScanV2Plugin> mWeakReference;
     private final String path;
 
     public QrCodeAsyncTask(FlutterScanV2Plugin plugin, String path) {
+        super();
         mWeakReference = new WeakReference<>(plugin);
         this.path = path;
     }

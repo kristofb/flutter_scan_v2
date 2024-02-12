@@ -10,6 +10,12 @@ class MockFlutterScanV2Platform
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<String?> parse(String path) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
 }
 
 void main() {
