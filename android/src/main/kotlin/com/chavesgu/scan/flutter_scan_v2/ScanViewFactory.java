@@ -34,6 +34,7 @@ public class ScanViewFactory extends PlatformViewFactory {
     @NonNull
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
+        @SuppressWarnings("unchecked")
         final Map<String, Object> creationParams = (Map<String, Object>) args;
         return new ScanPlatformView(messenger, this.context, this.activity, this.activityPluginBinding, viewId, creationParams);
     }
