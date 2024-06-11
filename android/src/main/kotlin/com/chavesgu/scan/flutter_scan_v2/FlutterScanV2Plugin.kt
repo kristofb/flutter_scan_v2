@@ -18,7 +18,7 @@ class FlutterScanV2Plugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     var flutterPluginBinding: FlutterPluginBinding? = null
-    private val _result: Result? = null
+    private var _result: Result? = null
     private var task: QrCodeAsyncTask? = null
     private var activity: Activity? = null
 
@@ -34,6 +34,7 @@ class FlutterScanV2Plugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         } else if (call.method.equals("parse")) {
             val path: String? = call.arguments as String?
             val task = QrCodeAsyncTask(this, path)
+            _result = result;
             task.execute(path)
         } else {
             result.notImplemented()
@@ -60,10 +61,15 @@ class FlutterScanV2Plugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         flutterPluginBinding = null
     }
 
-    fun endOfTask(s: String) {
-        _result?.success(s)
+    fun endOfTask(s: String?) {
+        if (s != null) {
+            _result?.success(s)
+        } else {
+            _result?.error("Wrong QR", "Impossible to find a proper QR code on the given image", null)
+        }
         task?.cancel(true)
         task = null
+        _result = null;
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
