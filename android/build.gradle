@@ -29,7 +29,7 @@ android {
         namespace 'com.chavesgu.scan.flutter_scan_v2'
     }
 
-    compileSdk 33
+    compileSdk 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
