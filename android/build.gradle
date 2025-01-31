@@ -57,6 +57,12 @@ android {
         implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
     }
 
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+
     testOptions {
         unitTests.all {
             useJUnitPlatform()
